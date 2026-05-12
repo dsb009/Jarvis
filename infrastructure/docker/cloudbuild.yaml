@@ -1,0 +1,23 @@
+# Cloud Build config for API
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-f', 'jarvis-backend/Dockerfile.cloudrun',
+      '-t', 'gcr.io/$PROJECT_ID/jarvis-api:$COMMIT_SHA',
+      'jarvis-backend/'
+    ]
+
+  # Push to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'gcr.io/$PROJECT_ID/jarvis-api:$COMMIT_SHA'
+    ]
+
+images:
+  - 'gcr.io/$PROJECT_ID/jarvis-api:$COMMIT_SHA'
+
+options:
+  machineType: 'E2_HIGHER'  # More CPU for faster builds

@@ -1,0 +1,21 @@
+# Cloud Build config for Worker
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-f', 'jarvis-backend/Dockerfile.worker',
+      '-t', 'gcr.io/$PROJECT_ID/jarvis-worker:$COMMIT_SHA',
+      'jarvis-backend/'
+    ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'gcr.io/$PROJECT_ID/jarvis-worker:$COMMIT_SHA'
+    ]
+
+images:
+  - 'gcr.io/$PROJECT_ID/jarvis-worker:$COMMIT_SHA'
+
+options:
+  machineType: 'E2_HIGHER'

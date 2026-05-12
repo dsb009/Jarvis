@@ -1,0 +1,51 @@
+# ============================================
+# JARVIS Docker Compose
+# For LOCAL DEVELOPMENT ONLY
+# For production, use Cloud Run (see SETUP.md)
+# ============================================
+
+version: '3.8'
+
+services:
+  # Backend API
+  api:
+    build:
+      context: ./jarvis-backend
+      dockerfile: Dockerfile.cloudrun
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ENV=development
+      - DATABASE_URL=${DATABASE_URL}
+      - UPSTASH_REDIS_REST_URL=${UPSTASH_REDIS_REST_URL}
+      - UPSTASH_REDIS_REST_TOKEN=${UPSTASH_REDIS_REST_TOKEN}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+    volumes:
+      - ./jarvis-backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+
+  # Worker (for local development)
+  worker:
+    build:
+      context: ./jarvis-backend
+      dockerfile: Dockerfile.worker
+    environment:
+      - APP_ENV=development
+      - UPSTASH_REDIS_REST_URL=${UPSTASH_REDIS_REST_URL}
+      - UPSTASH_REDIS_REST_TOKEN=${UPSTASH_REDIS_REST_TOKEN}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - api
+    command: python -m app.worker
+
+# Note: For production deployment, see infrastructure/scripts/
+# - deploy-api.sh: Deploys API to Cloud Run
+# - deploy-worker.sh: Deploys Worker to Cloud Run Job
+# - deploy-scheduler.sh: Sets up Cloud Scheduler

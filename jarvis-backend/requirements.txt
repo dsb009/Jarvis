@@ -1,0 +1,56 @@
+# FastAPI & Server
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+python-multipart==0.0.12
+
+# Database
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.0
+
+# Supabase Client
+supabase==2.10.0
+
+# Upstash Redis (Serverless Queue)
+upstash-redis==0.5.0
+
+# LLM Clients
+openai==1.57.0
+google-generativeai==0.8.3
+
+# Agent Frameworks
+langgraph==0.2.58
+langchain-core==0.3.24
+
+# Pydantic
+pydantic==2.10.3
+pydantic-settings==2.6.1
+
+# Utilities
+httpx==0.28.1
+python-dotenv==1.0.1
+structlog==24.4.0
+python-dateutil==2.9.0
+
+# Telegram Bot (Webhook mode)
+python-telegram-bot==21.6
+
+# Google Cloud SDK (for Cloud Run deployment)
+google-cloud-run==0.11.0
+google-cloud-tasks==2.10.0
+google-cloud-scheduler==2.2.0
+
+# Celery (for local development option)
+celery==5.4.0
+
+# Financial Data
+yfinance==0.2.43
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+pytest-cov==6.0.0
+
+# Linting & Type Checking
+ruff==0.8.3
+pyright==1.1.389
